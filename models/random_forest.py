@@ -20,29 +20,22 @@ def main():
     weather_np = []
     air_np = []
 
-    # take some minutes to run
-    for city_id in ['Hà Nội', 'Hưng Yên', 'Bắc Ninh']:          
-        # load air quality and weather data files 
+    for city_id in ['Hà Nội', 'Hưng Yên', 'Bắc Ninh']:   
         air_df = air.loc[air['province'] == city_id].drop(columns=['province'])
         weather_df = weather.loc[weather['province'] == city_id].drop(columns=['province'])   
-        
-        # air quality data preprocessing
+ 
         air_df = air_df.loc[(air_df.iloc[:, 1:] >= 0).all(axis=1)]
         air_df.drop("aqi", axis=1, inplace=True)
         air_df.reset_index(drop=True, inplace=True)
-        
-        # weather data preprocessing
+
         weather_df.dropna(axis=0, inplace=True)
         weather_df.reset_index(drop=True, inplace=True)
-        
-        # making sliding windows
+
         X, y = sliding_window(weather_df, air_df, target_size="same")
-        
-        # flatten the windows and concanate extra attibutes
+
         m = X.shape[0]
         X = X.reshape((m, -1))
-        
-        # add to main dataset arrays
+
         weather_np.append(X)
         air_np.append(y)
         
@@ -57,7 +50,7 @@ def main():
     idx = list(range(len(weather_np)))
     random.shuffle(idx)
 
-    train_ratio = 0.8  # 80% train, 20% test
+    train_ratio = 0.8  
     split_point = int(train_ratio * len(X))
 
     train_idx = idx[:split_point]
@@ -83,11 +76,19 @@ def main():
             multioutput="uniform_average"
         )
 
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    score = custom_scorer(y_test.reshape(-1, 1), y_pred.reshape(-1, 1))
-    print("Custom RMSE score:", score)
+    scoring = make_scorer(custom_scorer)
 
-    print(pd.Series(root_mean_squared_error(model.predict(X_test), y_test, multioutput="raw_values"), 
-            index=["co", "no2", "o3", "so2", "pm2_5", "pm10"]))
+    param_grid = {"regressor__forest__max_depth": [20, 30],      
+                "regressor__forest__min_samples_split": [2, 5, 10],  
+                "regressor__forest__min_samples_leaf": [2, 5, 10]}
+    tuner = GridSearchCV(model, param_grid, scoring=scoring, verbose=2, cv=3, n_jobs=-1)
+
+    tuner.fit(X_train, y_train)
+    dump(tuner.best_estimator_, "random_forest.pkl", compress=3) 
+    return
+
+if __name__ == "__main__":
+    main()
+
+
     
