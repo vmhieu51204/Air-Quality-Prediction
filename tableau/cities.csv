@@ -1,0 +1,4 @@
+,city,city_ascii,lat,lng,country,iso2,iso3,admin_name,capital,population,id
+1,Hanoi,Hanoi,21.0,105.85,Vietnam,VN,VNM,Hà Nội,primary,8246600.0,1704413791
+6,Bắc Ninh,Bac Ninh,21.1833,106.05,Vietnam,VN,VNM,Bắc Ninh,admin,520000.0,1704025181
+42,Hưng Yên,Hung Yen,20.65,106.0667,Vietnam,VN,VNM,Hưng Yên,admin,147275.0,1704000203
