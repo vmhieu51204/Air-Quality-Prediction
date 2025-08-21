@@ -29,3 +29,9 @@ precipitation, wind speed...) —using both traditional and deep learning techni
 └── README.md              # Project overview and instructions
 
 ```
+##  Data visualization
+https://public.tableau.com/views/Weather-air/Dashboard2?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+<img width="1920" height="1080" alt="Dashboard 2" src="https://github.com/user-attachments/assets/b0112bac-0425-4ae0-9e6f-d2a40451098f" />
+https://public.tableau.com/views/Weather-air/Dashboard3?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+<img width="1920" height="1080" alt="Dashboard 3" src="https://github.com/user-attachments/assets/4a6d1d58-d9f8-4a85-922b-5e04ef3d8c3b" />
+
